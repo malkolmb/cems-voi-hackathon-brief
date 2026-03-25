@@ -119,6 +119,7 @@
           <span class="src-badge" style="background:var(--blue-fill);color:var(--blue-text);">Internal</span>
           <span class="src-text"><strong>Voi map data</strong> — operations zone and designated parking spots for your chosen city. Required context for any fleet or zone analysis.</span>
         </div>
+
         <div style="margin-top:10px;padding:10px 14px;border-left:2px solid var(--amber-text);font-size:12px;background:var(--amber-fill);border-radius:0 4px 4px 0;">
           <a href="https://drive.google.com/drive/folders/1TQccygl-165Uoa00mmBHJPCThnfPvwSu?usp=sharing" target="_blank" style="color:var(--amber-text);text-decoration:none;">↓ Download pre-fetched data — PredictHQ events &amp; Voi map files ↗</a>
         </div>
@@ -176,7 +177,8 @@
           <li><span>—</span><span><strong style="color:var(--white);">operations.json</strong> — a single <code style="font-family:'Courier New',monospace;font-size:12px;color:var(--blue-text);">MultiPolygon</code> feature defining the entire Voi operations zone for the city. This is the boundary within which vehicles may be ridden and parked. Use this to check whether an event falls inside or outside the zone, and to render the service area on the map.</span></li>
           <li><span>—</span><span><strong style="color:var(--white);">parking.json</strong> — individual <code style="font-family:'Courier New',monospace;font-size:12px;color:var(--blue-text);">Polygon</code> features, each representing a designated parking spot within the ops zone.</span></li>
         </ul>
-        <p style="margin-top:12px;padding:10px 14px;border-left:2px solid var(--border2);font-size:12px;color:var(--muted);">Voi uses <strong style="color:var(--white);">mandatory parking</strong> — riders must end their trip at or near a designated parking spot inside the ops zone. Parking spot density around an event venue is therefore a direct proxy for how well Voi can serve that location. An event inside the zone with few nearby parking spots is a signal to pre-position vehicles proactively.</p>
+        <p style="margin-top:12px;padding:10px 14px;border-left:2px solid var(--coral-text);font-size:12px;background:var(--coral-fill);border-radius:0 4px 4px 0;color:var(--coral-text);line-height:1.6;"><strong style="color:var(--coral-text);">Confidential &amp; proprietary.</strong> The Voi map data is internal and provided exclusively for use in this hackathon. By participating, you agree not to share, distribute, or reproduce this data in any form outside of this event.</p>
+        <p style="margin-top:12px;padding:10px 14px;border-left:2px solid var(--border2);font-size:12px;color:var(--muted);background:var(--gray-fill);border-radius:0 4px 4px 0;">Voi uses <strong style="color:var(--white);">mandatory parking</strong> — riders must end their trip at or near a designated parking spot inside the ops zone. Parking spot density around an event venue is therefore a direct proxy for how well Voi can serve that location. An event inside the zone with few nearby parking spots is a signal to pre-position vehicles proactively.</p>
       </div>
     </div>
 
@@ -184,31 +186,7 @@
       <div class="doc-section-title">PredictHQ event data</div>
       <div class="doc-body">
         <p>PredictHQ is a demand intelligence platform that aggregates and structures real-world event data from thousands of sources globally. Event data for London, Berlin, and Paris has been pre-fetched and is provided in the data folder. Each file is a <strong style="color:var(--white);">JSONL</strong> (JSON Lines) file — one JSON object per line, each representing a single event. If you want to explore PredictHQ directly or fetch additional data, sign up at <a href="https://www.predicthq.com" target="_blank" style="color:var(--blue-text);">predicthq.com</a> — the next 90 days of event data are free.</p>
-        <p style="margin-top:10px;padding:10px 14px;border-left:2px solid var(--border2);font-size:12px;color:var(--muted);">These are tips to get you started — not a complete guide. The best way to understand what's in this dataset is to <strong style="color:var(--white);">query it with AI</strong>. Ask questions, explore the fields, and iterate. You'll find what's useful faster that way than reading documentation.</p>
-        <p style="margin-top:10px;">Each record has many fields — most of which you won't need. The fields most relevant to this challenge are:</p>
-        <div class="field-grid">
-          <span class="field-pill key">title</span>
-          <span class="field-pill key">category</span>
-          <span class="field-pill key">start_local</span>
-          <span class="field-pill key">end_local</span>
-          <span class="field-pill key">location</span>
-          <span class="field-pill key">phq_attendance</span>
-          <span class="field-pill key">rank</span>
-          <span class="field-pill key">local_rank</span>
-          <span class="field-pill key">phq_labels</span>
-          <span class="field-pill key">geo</span>
-          <span class="field-pill">duration</span>
-          <span class="field-pill">scope</span>
-          <span class="field-pill">description</span>
-          <span class="field-pill">entities</span>
-          <span class="field-pill">state</span>
-        </div>
-        <ul style="margin-top:16px;">
-          <li><span>—</span><span><strong style="color:var(--white);">phq_attendance</strong> is the predicted attendance figure — your primary demand signal. It will be null for some records (public holidays, observances), so always handle the null case and fall back to <code style="font-family:'Courier New',monospace;font-size:12px;color:var(--blue-text);">rank</code> or <code style="font-family:'Courier New',monospace;font-size:12px;color:var(--blue-text);">local_rank</code> as a proxy. Some values may be outliers — PredictHQ aggregates from multiple sources including scraped data, so sanity-check any figures that look unexpectedly large.</span></li>
-          <li><span>—</span><span><strong style="color:var(--white);">location</strong> is a [longitude, latitude] array — this follows the <strong style="color:var(--white);">GeoJSON spec</strong>, which defines coordinate order as lon/lat. This is intentional but counterintuitive, and the opposite of what most map libraries (e.g. Leaflet) expect. Swap the values when passing to your map. <strong style="color:var(--white);">geo</strong> contains a full GeoJSON polygon for events with a defined area, useful for drawing event zones on the map.</span></li>
-          <li><span>—</span><span><strong style="color:var(--white);">category</strong> groups events by type. The most useful for fleet planning are typically concerts, performing arts, and sports. Categories like public holidays and observances are low-signal for this use case and can likely be filtered out.</span></li>
-          <li><span>—</span><span><strong style="color:var(--white);">rank</strong> (0–100) is PredictHQ's global impact score; <strong style="color:var(--white);">local_rank</strong> is the same score relative to the local area. For city-level recommendations, <code style="font-family:'Courier New',monospace;font-size:12px;color:var(--blue-text);">local_rank</code> is generally the more useful signal.</span></li>
-        </ul>
+        <p style="margin-top:10px;padding:10px 14px;border-left:2px solid var(--border2);font-size:12px;color:var(--muted);background:var(--gray-fill);border-radius:0 4px 4px 0;">The best way to understand what's in this dataset is to <strong style="color:var(--white);">query it with AI</strong>. Ask questions, explore the fields, and iterate. You'll find what's useful faster that way than reading documentation. For full field reference, see the <a href="https://docs.predicthq.com/api/events/search-events" target="_blank" style="color:var(--blue-text);">PredictHQ API docs ↗</a>.</p>
       </div>
     </div>
 
