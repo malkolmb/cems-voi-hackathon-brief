@@ -58,6 +58,15 @@
   .field-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 6px; margin-top: 10px; }
   .field-pill { font-family: 'DM Mono', monospace; font-size: 11px; padding: 3px 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; color: #a8a49c; }
   .field-pill.key { border-color: var(--blue-border); color: var(--blue-text); background: var(--blue-fill); }
+
+  @media (max-width: 620px) {
+    body { padding: 28px 20px; }
+    .header { flex-direction: column; gap: 14px; }
+    .header-left { width: 100%; }
+    .voi-logo { order: -1; width: 52px; margin-top: 0; }
+    h1 { font-size: 24px; }
+    .two-col { grid-template-columns: 1fr; gap: 24px; }
+  }
 </style>
 </head>
 <body>
@@ -113,7 +122,7 @@
         </div>
         <div class="source">
           <span class="src-badge" style="background:var(--green-fill);color:var(--green-text);">External</span>
-          <span class="src-text"><strong>PredictHQ event data</strong> — upcoming events with attendance, coordinates, and demand rank, pre-fetched for <strong>London</strong>, <strong>Berlin</strong>, and <strong>Paris</strong>. Pick one city or go multi-city if you're feeling ambitious.</span>
+          <span class="src-text"><strong>PredictHQ event data</strong> — upcoming events with attendance, coordinates, and demand rank for <strong>London</strong>, <strong>Berlin</strong>, and <strong>Paris</strong>. A Python fetch script is provided in the data folder — each team must <strong>create a free PredictHQ account</strong> and insert their own API key to run it.</span>
         </div>
         <div class="source">
           <span class="src-badge" style="background:var(--blue-fill);color:var(--blue-text);">Internal</span>
@@ -121,7 +130,7 @@
         </div>
 
         <div style="margin-top:10px;padding:10px 14px;border-left:2px solid var(--amber-text);font-size:12px;background:var(--amber-fill);border-radius:0 4px 4px 0;">
-          <a href="https://drive.google.com/drive/folders/1TQccygl-165Uoa00mmBHJPCThnfPvwSu?usp=sharing" target="_blank" style="color:var(--amber-text);text-decoration:none;">↓ Download pre-fetched data — PredictHQ events &amp; Voi map files ↗</a>
+          <a href="https://drive.google.com/drive/folders/1TQccygl-165Uoa00mmBHJPCThnfPvwSu?usp=sharing" target="_blank" style="color:var(--amber-text);text-decoration:none;">↓ Download starter files — PredictHQ fetch script &amp; Voi map files ↗</a>
         </div>
       </div>
     </div>
@@ -146,7 +155,7 @@
   <div class="section-label">Tips & tricks</div>
   <div class="context-block">
     <ul style="list-style:none;display:flex;flex-direction:column;gap:7px;padding:0;">
-      <li style="display:flex;gap:10px;"><span style="color:var(--muted);flex-shrink:0;">—</span><span>Voi's approximate fleet sizes: <strong>London ~5,500 vehicles</strong>, <strong>Paris ~6,000</strong>, <strong>Berlin ~12,000</strong> — use these as references when sizing fleet recommendations.</span></li>
+      <li style="display:flex;gap:10px;"><span style="color:var(--muted);flex-shrink:0;">—</span><span>Voi's approximate fleet sizes: <strong>London ~5,500 vehicles</strong>, <strong>Paris ~6,000</strong>, <strong>Berlin ~12,000</strong> — use these as references when sizing fleet recommendations. Think about demand patterns: how many people will attend a given event, what share of them might realistically choose micromobility, and how many trips and vehicles does that translate to? Even rough estimates give your recommendations a grounding in reality.</span></li>
       <li style="display:flex;gap:10px;"><span style="color:var(--muted);flex-shrink:0;">—</span><span>The provided dataset contains more fields than you need. <strong>Be selective</strong> — focus on the data points that are material to fleet decisions and discard the rest. A clean, focused data model will serve you better than trying to surface everything.</span></li>
       <li style="display:flex;gap:10px;"><span style="color:var(--muted);flex-shrink:0;">—</span><span>There will be a lot of information on screen — use <strong>visual hierarchy and colour</strong> deliberately. The tool should make it immediately obvious which events need attention and what action to take.</span></li>
     </ul>
@@ -185,8 +194,9 @@
     <div style="border-top: 1px solid var(--border); padding-top: 20px;">
       <div class="doc-section-title">PredictHQ event data</div>
       <div class="doc-body">
-        <p>PredictHQ is a demand intelligence platform that aggregates and structures real-world event data from thousands of sources globally. Event data for London, Berlin, and Paris has been pre-fetched and is provided in the data folder. Each file is a <strong style="color:var(--white);">JSONL</strong> (JSON Lines) file — one JSON object per line, each representing a single event. If you want to explore PredictHQ directly or fetch additional data, sign up at <a href="https://www.predicthq.com" target="_blank" style="color:var(--blue-text);">predicthq.com</a> — the next 90 days of event data are free.</p>
-        <p style="margin-top:10px;padding:10px 14px;border-left:2px solid var(--border2);font-size:12px;color:var(--muted);background:var(--gray-fill);border-radius:0 4px 4px 0;">The best way to understand what's in this dataset is to <strong style="color:var(--white);">query it with AI</strong>. Ask questions, explore the fields, and iterate. You'll find what's useful faster that way than reading documentation. For full field reference, see the <a href="https://docs.predicthq.com/api/events/search-events" target="_blank" style="color:var(--blue-text);">PredictHQ API docs ↗</a>.</p>
+        <p>PredictHQ is a demand intelligence platform that aggregates and structures real-world event data from thousands of sources globally. A <strong style="color:var(--white);">Python script</strong> is provided in the data folder to fetch event data for London, Berlin, and Paris. To use it, each team needs to <strong style="color:var(--white);">create a free account</strong> at <a href="https://www.predicthq.com" target="_blank" style="color:var(--blue-text);">predicthq.com</a>, generate an API key, and insert it into the script. The script outputs a <strong style="color:var(--white);">JSONL</strong> (JSON Lines) file — one JSON object per line, each representing a single event.</p>
+        <p style="margin-top:10px;padding:10px 14px;border-left:2px solid var(--green-border);font-size:12px;color:var(--muted);background:var(--green-fill);border-radius:0 4px 4px 0;"><strong style="color:var(--green-text);">Getting your API key:</strong> sign up at predicthq.com → open <strong style="color:var(--green-text);">API Tools</strong> from the main menu → create a new token. The free tier covers the next 90 days of event data, which is all you need for this challenge. If you run into trouble with the API key or the script, flag down a Voi facilitator and they'll help you get unblocked.</p>
+        <p style="margin-top:10px;padding:10px 14px;border-left:2px solid var(--border2);font-size:12px;color:var(--muted);background:var(--gray-fill);border-radius:0 4px 4px 0;">The best way to understand what's in the fetched data is to <strong style="color:var(--white);">query it with AI</strong>. Ask questions, explore the fields, and iterate. You'll find what's useful faster that way than reading documentation. For full field reference, see the <a href="https://docs.predicthq.com/api/events/search-events" target="_blank" style="color:var(--blue-text);">PredictHQ API docs ↗</a>.</p>
       </div>
     </div>
 
